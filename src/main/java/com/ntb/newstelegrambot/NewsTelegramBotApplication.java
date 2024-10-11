@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NewsTelegramBotApplication {
 
     public static void main(String[] args) {
+        //CI configure
         SpringApplication.run(NewsTelegramBotApplication.class, args);
     }
 
