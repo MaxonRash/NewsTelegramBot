@@ -1,25 +1,31 @@
 package com.ntb.newstelegrambot.bot;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.ntb.newstelegrambot.commands.CommandContainer;
+import com.ntb.newstelegrambot.services.SendBotMessageServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.longpolling.BotSession;
-import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
-import org.telegram.telegrambots.longpolling.starter.AfterBotRegistration;
-import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
-import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+import static com.ntb.newstelegrambot.commands.CommandName.NO;
 
 @Component
-public class NewsTelegramBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
-    private final TelegramClient telegramClient;
-    private final String botToken;
-    public NewsTelegramBot(@Qualifier("telegramClient") TelegramClient telegramClient, @Value("${bot.token}") String token) {
-        this.telegramClient = telegramClient;
-        this.botToken = token;
+public class NewsTelegramBot extends TelegramLongPollingBot {
+    public static String COMMAND_PREFIX = "/";
+    @Value("${bot.username}")
+    private String username;
+    @Value("${bot.token}")
+    private String botToken;
+    private final CommandContainer commandContainer;
+
+
+    public NewsTelegramBot() {
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+    }
+
+    @Override
+    public String getBotUsername() {
+        return username;
     }
 
     @Override
@@ -28,33 +34,16 @@ public class NewsTelegramBot implements SpringLongPollingBot, LongPollingSingleT
     }
 
     @Override
-    public LongPollingUpdateConsumer getUpdatesConsumer() {
-        return this;
-    }
-
-    @Override
-    public void consume(Update update) {
-        // We check if the update has a message and the message has text
+    public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            // Set variables
-            String message_text = update.getMessage().getText();
-            long chat_id = update.getMessage().getChatId();
+            String message = update.getMessage().getText().trim();
+            if (message.startsWith(COMMAND_PREFIX)) {
+                String commandIdentifier = message.split(" ")[0].toLowerCase();
 
-            SendMessage message = SendMessage // Create a message object
-                    .builder()
-                    .chatId(chat_id)
-                    .text(message_text)
-                    .build();
-            try {
-                telegramClient.execute(message); // Sending our message object to user
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+                commandContainer.retrieveCommand(commandIdentifier).execute(update);
+            } else {
+                commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
             }
         }
-    }
-
-    @AfterBotRegistration
-    public void afterRegistration(BotSession botSession) {
-        System.out.println("Registered bot running state is: " + botSession.isRunning());
     }
 }
