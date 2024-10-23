@@ -3,6 +3,8 @@
 # Add environment variables
 export BOT_NAME=$1
 export BOT_TOKEN=$2
+export BOT_DB_USERNAME=$3
+export BOT_DB_PASSWORD=$4
 
 # Prepare Jar
 mvn clean
