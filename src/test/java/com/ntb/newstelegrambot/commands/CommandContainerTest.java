@@ -2,6 +2,7 @@ package com.ntb.newstelegrambot.commands;
 
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TelegramUserService;
+import com.ntb.newstelegrambot.services.TopicSubService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,8 @@ public class CommandContainerTest {
     public void init() {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService);
+        TopicSubService topicSubService = Mockito.mock(TopicSubService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, topicSubService);
     }
 
     @Test
