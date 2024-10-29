@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.5.0-SNAPSHOT
+
+*   NewsTB-5: added command for subscribing to topic. 
+
 ## 0.4.0-SNAPSHOT
 
 *   NewsTB-4: added repository layer.
