@@ -1,4 +1,4 @@
-package com.ntb.newstelegrambot.kafka;
+package com.ntb.newstelegrambot.kafka.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,11 @@ import lombok.ToString;
 @ToString
 public class NewsObject {
     private String sourceName;
+    private String author;
     private String title;
+    private String description;
     private String url;
+    private String urlToImage;
     private String publishedAt;
+    private String content;
 }

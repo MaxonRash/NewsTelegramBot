@@ -1,4 +1,4 @@
-package com.ntb.newstelegrambot.kafka;
+package com.ntb.newstelegrambot.kafka.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ListOfNewObjects {
+public class ListOfNewsObjects {
     List<NewsObject> newsObjectList;
 }
