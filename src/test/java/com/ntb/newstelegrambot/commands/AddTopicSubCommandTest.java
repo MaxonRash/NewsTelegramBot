@@ -1,5 +1,6 @@
 package com.ntb.newstelegrambot.commands;
 
+import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
 import com.ntb.newstelegrambot.repositories.entities.TelegramUser;
 import com.ntb.newstelegrambot.repositories.entities.Topic;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
@@ -26,9 +27,10 @@ public class AddTopicSubCommandTest {
     public void init() {
         TopicSubService topicSubService = Mockito.mock(TopicSubService.class);
         sendBotMessageService = Mockito.mock(SendBotMessageService.class);
+        KafkaActiveQueriesSender kafkaActiveQueriesSender = Mockito.mock(KafkaActiveQueriesSender.class);
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
 
-        addTopicSubCommand = new AddTopicSubCommand(sendBotMessageService, topicSubService);
+        addTopicSubCommand = new AddTopicSubCommand(sendBotMessageService, topicSubService, kafkaActiveQueriesSender);
 
         telegramUser = new TelegramUser();
         telegramUser.setChatId("1");

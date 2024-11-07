@@ -1,27 +1,30 @@
 package com.ntb.newstelegrambot.commands;
 
-import com.ntb.newstelegrambot.repositories.entities.Topic;
+import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
+import com.ntb.newstelegrambot.kafka.entities.ListOfActiveQueries;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TopicSubService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Add Topic subscription {@link Command}.
  */
 @Slf4j
 public class AddTopicSubCommand implements Command {
+    private final KafkaActiveQueriesSender kafkaActiveQueriesSender;
 
     private final SendBotMessageService sendBotMessageService;
     private final TopicSubService topicSubService;
 
-    public AddTopicSubCommand(SendBotMessageService sendBotMessageService, TopicSubService topicSubService) {
+    public AddTopicSubCommand(SendBotMessageService sendBotMessageService, TopicSubService topicSubService, KafkaActiveQueriesSender kafkaActiveQueriesSender) {
         this.sendBotMessageService = sendBotMessageService;
         this.topicSubService = topicSubService;
+        this.kafkaActiveQueriesSender = kafkaActiveQueriesSender;
     }
 
     @Override
@@ -37,6 +40,10 @@ public class AddTopicSubCommand implements Command {
             topicSubService.save(chatId, topicName);
             sendBotMessageService.sendMessage(chatId, String.format("Подписал на новости по %s", topicName));
             log.info(String.format("User %s subscribed for %s", chatId, topicName));
+            ListOfActiveQueries list = new ListOfActiveQueries();
+            list.setActiveQueries(new ArrayList<>(Collections.singleton(topicName)));
+            kafkaActiveQueriesSender.sendMessageToQueriesNewsTopic(list);
+            log.info("Sent new topic with name \"" + topicName + "\" to kafka activeQueries");
         } else {
             sendBotMessageService.sendMessage(chatId, "Ключевое слово для подписки должно состоять из букв. Пример: /topicsub tesla");
         }

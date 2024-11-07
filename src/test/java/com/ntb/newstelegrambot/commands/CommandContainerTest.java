@@ -1,5 +1,6 @@
 package com.ntb.newstelegrambot.commands;
 
+import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TelegramUserService;
 import com.ntb.newstelegrambot.services.TopicSubService;
@@ -20,7 +21,8 @@ public class CommandContainerTest {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
         TopicSubService topicSubService = Mockito.mock(TopicSubService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, topicSubService);
+        KafkaActiveQueriesSender kafkaActiveQueriesSender = Mockito.mock(KafkaActiveQueriesSender.class);
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, topicSubService, kafkaActiveQueriesSender);
     }
 
     @Test
