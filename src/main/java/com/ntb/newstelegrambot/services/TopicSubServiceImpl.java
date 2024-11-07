@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,11 @@ public class TopicSubServiceImpl implements TopicSubService {
     @Override
     public Optional<Topic> findByTopicName(String topicName) {
         return topicRepository.findByTopicName(topicName);
+    }
+
+    @Override
+    public List<Topic> findAll() {
+        return topicRepository.findAll();
     }
 
     @Override
