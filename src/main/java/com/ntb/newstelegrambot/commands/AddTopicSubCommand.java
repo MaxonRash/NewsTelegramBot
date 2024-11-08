@@ -32,10 +32,10 @@ public class AddTopicSubCommand implements Command {
         String chatId = update.getMessage().getChatId().toString();
         String[] messageSplit = update.getMessage().getText().split(StringUtils.SPACE);
         if (update.getMessage().getText().equalsIgnoreCase(CommandName.ADD_TOPIC_SUB.getCommandName())) {
-            sendBotMessageService.sendMessage(chatId, "Нужно указать ключевое слово для подписки на новости по нему. Пример: /topicsub tesla");
+            sendBotMessageService.sendMessage(chatId, "Нужно указать ключевое слово для подписки на новости по нему. Пример: /sub tesla");
             return;
         }
-        String topicName = messageSplit[1];
+        String topicName = messageSplit[1].toLowerCase();
         if (StringUtils.isAlpha(topicName)) {
             topicSubService.save(chatId, topicName);
             sendBotMessageService.sendMessage(chatId, String.format("Подписал на новости по %s", topicName));
@@ -45,7 +45,7 @@ public class AddTopicSubCommand implements Command {
             kafkaActiveQueriesSender.sendMessageToQueriesNewsTopic(list);
             log.info("Sent new topic with name \"" + topicName + "\" to kafka activeQueries");
         } else {
-            sendBotMessageService.sendMessage(chatId, "Ключевое слово для подписки должно состоять из букв. Пример: /topicsub tesla");
+            sendBotMessageService.sendMessage(chatId, "Ключевое слово для подписки должно состоять из букв. Пример: /sub tesla");
         }
     }
 

@@ -70,7 +70,7 @@ public class AddTopicSubCommandTest {
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName());
         update.setMessage(message);
 
-        String messageToSend = "Нужно указать ключевое слово для подписки на новости по нему. Пример: /topicsub tesla";
+        String messageToSend = "Нужно указать ключевое слово для подписки на новости по нему. Пример: /sub tesla";
 
         //when
         addTopicSubCommand.execute(update);
@@ -88,7 +88,7 @@ public class AddTopicSubCommandTest {
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName() + " 123asd");
         update.setMessage(message);
 
-        String messageToSend = "Ключевое слово для подписки должно состоять из букв. Пример: /topicsub tesla";
+        String messageToSend = "Ключевое слово для подписки должно состоять из букв. Пример: /sub tesla";
 
         //when
         addTopicSubCommand.execute(update);

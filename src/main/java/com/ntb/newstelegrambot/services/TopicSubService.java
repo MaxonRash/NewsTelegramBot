@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface TopicSubService {
     Topic save(String chatId, String topicName);
+    Topic save(Topic topicName);
     Optional<Topic> findByTopicName(String topicName);
     List<Topic> findAll();
 }

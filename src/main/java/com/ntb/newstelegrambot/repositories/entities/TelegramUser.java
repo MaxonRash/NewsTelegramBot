@@ -1,11 +1,10 @@
 package com.ntb.newstelegrambot.repositories.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -14,6 +13,7 @@ import java.util.Objects;
 @Data
 @Entity
 @Table(name = "tg_user")
+@EqualsAndHashCode(exclude = "topics")
 public class TelegramUser {
 
     @Id
@@ -26,4 +26,12 @@ public class TelegramUser {
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Topic> topics;
 
+    @Override
+    public String toString() {
+        return "TelegramUser{" +
+                "chatId='" + chatId + '\'' +
+                ", active=" + active +
+                ", topics=" + topics.stream().map(Topic::getTopicName).toList() +
+                '}';
+    }
 }

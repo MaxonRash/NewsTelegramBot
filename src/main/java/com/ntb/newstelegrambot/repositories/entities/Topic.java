@@ -11,7 +11,7 @@ import java.util.Objects;
 @Data
 @Entity
 @Table
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "users")
 public class Topic {
     @Id
     @Column(name = "id")
@@ -31,6 +31,16 @@ public class Topic {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<TelegramUser> users;
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", topicName='" + topicName + '\'' +
+                ", active=" + active +
+                ", users=" + users.stream().map(TelegramUser::getChatId).toList() +
+                '}';
+    }
 
     public void addUser(TelegramUser telegramUser) {
         if(Objects.isNull(users)) {
