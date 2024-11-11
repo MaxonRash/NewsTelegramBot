@@ -17,4 +17,9 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("queriesNews").build();
     }
 
+    @Bean
+    public NewTopic topic3() {
+        return TopicBuilder.name("removeQuery").build();
+    }
+
 }

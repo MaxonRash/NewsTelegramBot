@@ -19,11 +19,17 @@ public class HelpCommand implements Command {
                     %s - приостановить работу со мной
                     
                     %s - посмотреть статистику
+                    
+                    ✨<b>Работа с подписками на статьи</b>✨
+                    %s - посмотреть все подписки на статьи
                     %s слово - подписаться на новости по этому слову
-
+                    %s слово - отписать от новостей по этому слову
+                    %s - отменить все подписки
+                    
                     %s - получить помощь в работе со мной
                     """,
-            START.getCommandName(), STOP.getCommandName(), STAT.getCommandName(), ADD_TOPIC_SUB.getCommandName(), HELP.getCommandName());
+            START.getCommandName(), STOP.getCommandName(), STAT.getCommandName(), GET_ALL_SUBS.getCommandName(),
+            ADD_TOPIC_SUB.getCommandName(), REMOVE_TOPIC_SUB.getCommandName(), REMOVE_ALL_TOPIC_SUBS.getCommandName(), HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {
         this.sendBotMessageService = sendBotMessageService;

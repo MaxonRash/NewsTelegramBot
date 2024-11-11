@@ -52,4 +52,9 @@ public class TopicSubServiceImpl implements TopicSubService {
         }
         return topicRepository.save(topic);
     }
+
+    @Override
+    public Topic save(Topic topic) {
+        return topicRepository.save(topic);
+    }
 }

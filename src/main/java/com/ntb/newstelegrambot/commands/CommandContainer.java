@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TelegramUserService;
+import com.ntb.newstelegrambot.services.TopicService;
 import com.ntb.newstelegrambot.services.TopicSubService;
 
 import static com.ntb.newstelegrambot.commands.CommandName.*;
@@ -16,7 +17,7 @@ public class CommandContainer {
     private final Command unknownCommand;
 
     public CommandContainer(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, TopicSubService topicSubService,
-                            KafkaActiveQueriesSender kafkaActiveQueriesSender) {
+                            KafkaActiveQueriesSender kafkaActiveQueriesSender, TopicService topicService) {
 
         commandMap = ImmutableMap.<String, Command>builder()
                 .put(START.getCommandName(), new StartCommand(sendBotMessageService, telegramUserService))
@@ -24,6 +25,8 @@ public class CommandContainer {
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(STAT.getCommandName(), new StatCommand(sendBotMessageService, telegramUserService))
                 .put(ADD_TOPIC_SUB.getCommandName(), new AddTopicSubCommand(sendBotMessageService, topicSubService, kafkaActiveQueriesSender))
+                .put(GET_ALL_SUBS.getCommandName(), new GetAllSubsCommand(telegramUserService, sendBotMessageService))
+                .put(REMOVE_TOPIC_SUB.getCommandName(), new TopicUnsubCommand(telegramUserService, sendBotMessageService, topicSubService, topicService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
                 .build();
 
