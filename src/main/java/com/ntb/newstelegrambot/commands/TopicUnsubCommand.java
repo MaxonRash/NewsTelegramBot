@@ -4,6 +4,7 @@ import com.ntb.newstelegrambot.repositories.entities.TelegramUser;
 import com.ntb.newstelegrambot.repositories.entities.Topic;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TelegramUserService;
+import com.ntb.newstelegrambot.services.TopicService;
 import com.ntb.newstelegrambot.services.TopicSubService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,12 +21,15 @@ public class TopicUnsubCommand implements Command{
     TelegramUserService telegramUserService;
     SendBotMessageService sendBotMessageService;
     TopicSubService topicSubService;
+    TopicService topicService;
 
     @Autowired
-    public TopicUnsubCommand(TelegramUserService telegramUserService, SendBotMessageService sendBotMessageService, TopicSubService topicSubService) {
+    public TopicUnsubCommand(TelegramUserService telegramUserService, SendBotMessageService sendBotMessageService,
+                             TopicSubService topicSubService, TopicService topicService) {
         this.telegramUserService = telegramUserService;
         this.sendBotMessageService = sendBotMessageService;
         this.topicSubService = topicSubService;
+        this.topicService = topicService;
     }
 
     @Override
@@ -50,11 +54,17 @@ public class TopicUnsubCommand implements Command{
                 var topicOptional = topicSubService.findByTopicName(topicName);
                 if (topicOptional.isPresent()) {
                     var topic = topicOptional.get();
-                    if (topics.stream().map(Topic::getTopicName).toList().contains(topic.getTopicName())) {
-                        topic.removeUser(telegramUser.get());
-                        topicSubService.save(topic);
+                    var newTopic = topicService.getTopicInstance();
+                    newTopic.setTopicName(topic.getTopicName());
+                    newTopic.setId(topic.getId());
+                    newTopic.setActive(topic.isActive());
+                    newTopic.setUsers(topic.getUsers());
+                    if (topics.stream().map(Topic::getTopicName).toList().contains(newTopic.getTopicName())) {
+                        newTopic.removeUser(telegramUser.get());
+                        topicSubService.save(newTopic);
                         sendBotMessageService.sendMessage(chatId, "Отписал от новостей по слову " + topicName);
                         log.info("User " + chatId + " unsubscribed from \"" + topicName + "\"");
+                        log.info("Sent unsubscribed topic to Kafka. Name: " + topicName);
                     } else {
                         sendBotMessageService.sendMessage(chatId, "Ты не подписан на новости по такому слову. Проверь все свои " +
                                 "подписки командой /get_subs");

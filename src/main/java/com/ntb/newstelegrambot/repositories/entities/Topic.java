@@ -1,14 +1,23 @@
 package com.ntb.newstelegrambot.repositories.entities;
 
+import com.ntb.newstelegrambot.kafka.KafkaRemoveQuerySender;
+import com.ntb.newstelegrambot.kafka.entities.RemoveQueryObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Component
+@Scope("prototype")
 @Data
+@NoArgsConstructor
 @Entity
 @Table
 @EqualsAndHashCode(exclude = "users")
@@ -31,6 +40,10 @@ public class Topic {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<TelegramUser> users;
+
+    @Transient
+    @Autowired
+    KafkaRemoveQuerySender kafkaRemoveQuerySender;
 
     @Override
     public String toString() {
@@ -57,6 +70,7 @@ public class Topic {
             users.remove(telegramUser);
             if (users.isEmpty()) {
                 users = null;
+                kafkaRemoveQuerySender.sendMessage(new RemoveQueryObject(this.topicName));
                 active = false;
             }
         }

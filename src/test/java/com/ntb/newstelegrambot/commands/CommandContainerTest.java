@@ -3,6 +3,7 @@ package com.ntb.newstelegrambot.commands;
 import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
 import com.ntb.newstelegrambot.services.SendBotMessageService;
 import com.ntb.newstelegrambot.services.TelegramUserService;
+import com.ntb.newstelegrambot.services.TopicService;
 import com.ntb.newstelegrambot.services.TopicSubService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,8 @@ public class CommandContainerTest {
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
         TopicSubService topicSubService = Mockito.mock(TopicSubService.class);
         KafkaActiveQueriesSender kafkaActiveQueriesSender = Mockito.mock(KafkaActiveQueriesSender.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, topicSubService, kafkaActiveQueriesSender);
+        TopicService topicService = Mockito.mock(TopicService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, topicSubService, kafkaActiveQueriesSender, topicService);
     }
 
     @Test

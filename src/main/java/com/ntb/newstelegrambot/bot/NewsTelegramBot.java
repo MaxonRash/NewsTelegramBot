@@ -4,6 +4,7 @@ import com.ntb.newstelegrambot.commands.CommandContainer;
 import com.ntb.newstelegrambot.kafka.KafkaActiveQueriesSender;
 import com.ntb.newstelegrambot.services.SendBotMessageServiceImpl;
 import com.ntb.newstelegrambot.services.TelegramUserService;
+import com.ntb.newstelegrambot.services.TopicService;
 import com.ntb.newstelegrambot.services.TopicSubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +24,10 @@ public class NewsTelegramBot extends TelegramLongPollingBot {
     private final CommandContainer commandContainer;
 
     @Autowired
-    public NewsTelegramBot(TelegramUserService telegramUserService, TopicSubService topicSubService, KafkaActiveQueriesSender kafkaActiveQueriesSender) {
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), telegramUserService, topicSubService, kafkaActiveQueriesSender);
+    public NewsTelegramBot(TelegramUserService telegramUserService, TopicSubService topicSubService,
+                           KafkaActiveQueriesSender kafkaActiveQueriesSender, TopicService topicService) {
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this),
+                telegramUserService, topicSubService, kafkaActiveQueriesSender, topicService);
     }
 
     @Override
