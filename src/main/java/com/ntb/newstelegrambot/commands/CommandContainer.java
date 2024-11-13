@@ -27,6 +27,7 @@ public class CommandContainer {
                 .put(ADD_TOPIC_SUB.getCommandName(), new AddTopicSubCommand(sendBotMessageService, topicSubService, kafkaActiveQueriesSender))
                 .put(GET_ALL_SUBS.getCommandName(), new GetAllSubsCommand(telegramUserService, sendBotMessageService))
                 .put(REMOVE_TOPIC_SUB.getCommandName(), new TopicUnsubCommand(telegramUserService, sendBotMessageService, topicSubService, topicService))
+                .put(REMOVE_ALL_TOPIC_SUBS.getCommandName(), new TopicUnsubAllCommand(telegramUserService, sendBotMessageService, topicSubService, topicService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
                 .build();
 

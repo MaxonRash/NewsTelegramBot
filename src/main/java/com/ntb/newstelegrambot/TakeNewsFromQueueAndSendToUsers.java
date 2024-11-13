@@ -49,8 +49,8 @@ public class TakeNewsFromQueueAndSendToUsers implements CommandLineRunner {
                         for (Map.Entry<String, ListOfNewsObjects> mapBefore : newsFromQueue.entrySet()) {
                             stringMapOfNewsFromQueue.put(mapBefore.getKey(),
                                     mapBefore.getValue().getNewsObjectList().stream().limit(10).map(newsObject -> "Заголовок: " + newsObject.getTitle() +
-                                            " Ссылка: " + newsObject.getUrl()).collect(Collectors.joining("\r\n", "Последние 10 новостей по теме "
-                        + mapBefore.getKey() + " : \r\n", "")));
+                                            " Ссылка: " + newsObject.getUrl()).collect(Collectors.joining("\r\n", "Последние 10 новостей по теме \""
+                        + mapBefore.getKey() + "\" : \r\n", "")));
                         }
 
                     } catch (InterruptedException e) {

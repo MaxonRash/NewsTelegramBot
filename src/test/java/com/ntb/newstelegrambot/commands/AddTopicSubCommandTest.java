@@ -52,7 +52,7 @@ public class AddTopicSubCommandTest {
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName() + " test");
         update.setMessage(message);
 
-        String messageToSend = String.format("Подписал на новости по %s", topic.getTopicName());
+        String messageToSend = String.format("Подписал на новости по \"%s\"", topic.getTopicName());
 
         //when
         addTopicSubCommand.execute(update);
