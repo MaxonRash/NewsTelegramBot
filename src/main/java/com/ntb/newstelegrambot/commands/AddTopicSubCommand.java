@@ -38,8 +38,8 @@ public class AddTopicSubCommand implements Command {
         String topicName = messageSplit[1].toLowerCase();
         if (StringUtils.isAlpha(topicName)) {
             topicSubService.save(chatId, topicName);
-            sendBotMessageService.sendMessage(chatId, String.format("Подписал на новости по %s", topicName));
-            log.info(String.format("User %s subscribed for %s", chatId, topicName));
+            sendBotMessageService.sendMessage(chatId, String.format("Подписал на новости по \"%s\"", topicName));
+            log.info(String.format("User %s subscribed for \"%s\"", chatId, topicName));
             ListOfActiveQueries list = new ListOfActiveQueries();
             list.setActiveQueries(new ArrayList<>(Collections.singleton(topicName)));
             kafkaActiveQueriesSender.sendMessageToQueriesNewsTopic(list);

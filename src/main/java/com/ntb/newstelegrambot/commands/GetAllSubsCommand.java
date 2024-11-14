@@ -33,8 +33,8 @@ public class GetAllSubsCommand implements Command{
             }
             else {
                 sendBotMessageService.sendMessage(String.valueOf(update.getMessage().getChatId()),
-                        topics.stream().map(Topic::getTopicName).collect(Collectors.joining(" ; ",
-                                "Все ключевые слова, на которые ты подписан: \r\n", "")));
+                        topics.stream().map(Topic::getTopicName).collect(Collectors.joining("\" ; \"",
+                                "Все ключевые слова, на которые ты подписан: \r\n\"", "\"")));
             }
         } else if (telegramUser.isEmpty()) {
             throw new NotFoundException("Юзер " + update.getMessage().getChatId() + " не найден в бд");

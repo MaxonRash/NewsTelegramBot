@@ -64,7 +64,7 @@ public class TopicUnsubCommand implements Command{
                         topicSubService.save(newTopic);
                         sendBotMessageService.sendMessage(chatId, "Отписал от новостей по слову " + topicName);
                         log.info("User " + chatId + " unsubscribed from \"" + topicName + "\"");
-                        log.info("Sent unsubscribed topic to Kafka. Name: " + topicName);
+                        log.info("Sent unsubscribed topic to Kafka. Name: \"" + topicName + "\"");
                     } else {
                         sendBotMessageService.sendMessage(chatId, "Ты не подписан на новости по такому слову. Проверь все свои " +
                                 "подписки командой /get_subs");
