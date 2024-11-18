@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
@@ -34,6 +35,9 @@ abstract class AbstractCommandTest {
 
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
+        User user = new User();
+        user.setUserName("TestUser");
+        Mockito.when(message.getFrom()).thenReturn(user);
         Mockito.when(message.getChatId()).thenReturn(chatId);
         Mockito.when(message.getText()).thenReturn(getCommandName());
         update.setMessage(message);

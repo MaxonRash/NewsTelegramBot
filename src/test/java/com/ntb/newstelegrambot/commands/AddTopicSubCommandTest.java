@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.Optional;
 
@@ -48,8 +49,11 @@ public class AddTopicSubCommandTest {
         //given
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
+        User user = new User();
+        user.setUserName("TestUser");
         Mockito.when(message.getChatId()).thenReturn(Long.valueOf(telegramUser.getChatId()));
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName() + " test");
+        Mockito.when(message.getFrom()).thenReturn(user);
         update.setMessage(message);
 
         String messageToSend = String.format("Подписал на новости по \"%s\"", topic.getTopicName());
@@ -66,8 +70,11 @@ public class AddTopicSubCommandTest {
         //given
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
+        User user = new User();
+        user.setUserName("TestUser");
         Mockito.when(message.getChatId()).thenReturn(Long.valueOf(telegramUser.getChatId()));
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName());
+        Mockito.when(message.getFrom()).thenReturn(user);
         update.setMessage(message);
 
         String messageToSend = "Нужно указать ключевое слово для подписки на новости по нему. Пример: /sub tesla";
@@ -84,8 +91,11 @@ public class AddTopicSubCommandTest {
         //given
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
+        User user = new User();
+        user.setUserName("TestUser");
         Mockito.when(message.getChatId()).thenReturn(Long.valueOf(telegramUser.getChatId()));
         Mockito.when(message.getText()).thenReturn(ADD_TOPIC_SUB.getCommandName() + " 123asd");
+        Mockito.when(message.getFrom()).thenReturn(user);
         update.setMessage(message);
 
         String messageToSend = "Ключевое слово для подписки должно состоять из букв. Пример: /sub tesla";
