@@ -34,6 +34,7 @@ public class TopicUnsubCommand implements Command{
 
     @Override
     public void execute(Update update) {
+        log.info("User " + update.getMessage().getFrom().getUserName() + " executed UNSUB command");
         Optional<TelegramUser> telegramUser = telegramUserService.findByChatId(String.valueOf(update.getMessage().getChatId()));
         String chatId = update.getMessage().getChatId().toString();
         if (telegramUser.isPresent() && telegramUser.get().isActive()) {
@@ -63,7 +64,7 @@ public class TopicUnsubCommand implements Command{
                         newTopic.removeUser(telegramUser.get());
                         topicSubService.save(newTopic);
                         sendBotMessageService.sendMessage(chatId, "Отписал от новостей по слову " + topicName);
-                        log.info("User " + chatId + " unsubscribed from \"" + topicName + "\"");
+                        log.info("User with id " + chatId + " and name " + update.getMessage().getFrom().getUserName() + " unsubscribed from \"" + topicName + "\"");
                         log.info("Sent unsubscribed topic to Kafka. Name: \"" + topicName + "\"");
                     } else {
                         sendBotMessageService.sendMessage(chatId, "Ты не подписан на новости по такому слову. Проверь все свои " +

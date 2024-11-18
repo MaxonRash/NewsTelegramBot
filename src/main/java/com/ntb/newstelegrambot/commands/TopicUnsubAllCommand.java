@@ -33,6 +33,7 @@ public class TopicUnsubAllCommand implements Command{
     }
     @Override
     public void execute(Update update) {
+        log.info("User " + update.getMessage().getFrom().getUserName() + " executed UNSUB_ALL command");
         Optional<TelegramUser> telegramUser = telegramUserService.findByChatId(String.valueOf(update.getMessage().getChatId()));
         String chatId = update.getMessage().getChatId().toString();
         if (telegramUser.isPresent() && telegramUser.get().isActive()) {
@@ -53,7 +54,7 @@ public class TopicUnsubAllCommand implements Command{
 
             modifiedTopics.forEach(topic1 -> topicSubService.save(topic1));
             sendBotMessageService.sendMessage(chatId, "Удалил все твои подписки, а именно: " + topics.stream().map(Topic::getTopicName).collect(Collectors.joining("\" ; \"", "\"", "\"")));
-            log.info("User " + chatId + " unsubscribed from " + topics.stream().map(Topic::getTopicName).collect(Collectors.joining("\" ; \"", "\"", "\"")));
+            log.info("User with id " + chatId + " and name " + update.getMessage().getFrom().getUserName() + " unsubscribed from " + topics.stream().map(Topic::getTopicName).collect(Collectors.joining("\" ; \"", "\"", "\"")));
             log.info("Sent unsubscribed topics to Kafka. Names: " + topics.stream().map(Topic::getTopicName).collect(Collectors.joining("\" ; \"", "\"", "\"")));
         } else if (telegramUser.isEmpty()) {
             throw new NotFoundException("Юзер " + chatId + " не найден в бд");

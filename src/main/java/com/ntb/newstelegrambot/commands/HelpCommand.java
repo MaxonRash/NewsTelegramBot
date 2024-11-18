@@ -1,6 +1,7 @@
 package com.ntb.newstelegrambot.commands;
 
 import com.ntb.newstelegrambot.services.SendBotMessageService;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.ntb.newstelegrambot.commands.CommandName.*;
@@ -8,6 +9,7 @@ import static com.ntb.newstelegrambot.commands.CommandName.*;
 /**
  * Help {@link Command}.
  */
+@Slf4j
 public class HelpCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
 
@@ -18,8 +20,6 @@ public class HelpCommand implements Command {
                     %s - начать работу со мной
                     %s - приостановить работу со мной
                     
-                    %s - посмотреть статистику
-                    
                     ✨<b>Работа с подписками на статьи</b>✨
                     %s - посмотреть все подписки на статьи
                     %s слово - подписаться на новости по этому слову
@@ -28,7 +28,7 @@ public class HelpCommand implements Command {
                     
                     %s - получить помощь в работе со мной
                     """,
-            START.getCommandName(), STOP.getCommandName(), STAT.getCommandName(), GET_ALL_SUBS.getCommandName(),
+            START.getCommandName(), STOP.getCommandName(), GET_ALL_SUBS.getCommandName(),
             ADD_TOPIC_SUB.getCommandName(), REMOVE_TOPIC_SUB.getCommandName(), REMOVE_ALL_TOPIC_SUBS.getCommandName(), HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {
@@ -38,5 +38,6 @@ public class HelpCommand implements Command {
     @Override
     public void execute(Update update) {
         sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), HELP_MESSAGE);
+        log.info("User " + update.getMessage().getFrom().getUserName() + " executed HELP command");
     }
 }

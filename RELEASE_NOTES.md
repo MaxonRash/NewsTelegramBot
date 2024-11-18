@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.0.0
+
+*   Working version, sending news at 12:00 and 20:00
+
 ## 0.5.0-SNAPSHOT
 
 *   NewsTB-5: added command for subscribing to topic. 

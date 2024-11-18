@@ -29,6 +29,7 @@ public class AddTopicSubCommand implements Command {
 
     @Override
     public void execute(Update update) {
+        log.info("User " + update.getMessage().getFrom().getUserName() + " executed SUB command");
         String chatId = update.getMessage().getChatId().toString();
         String[] messageSplit = update.getMessage().getText().split(StringUtils.SPACE);
         if (update.getMessage().getText().equalsIgnoreCase(CommandName.ADD_TOPIC_SUB.getCommandName())) {
@@ -39,7 +40,7 @@ public class AddTopicSubCommand implements Command {
         if (StringUtils.isAlpha(topicName)) {
             topicSubService.save(chatId, topicName);
             sendBotMessageService.sendMessage(chatId, String.format("Подписал на новости по \"%s\"", topicName));
-            log.info(String.format("User %s subscribed for \"%s\"", chatId, topicName));
+            log.info(String.format("User with id %s and name %s subscribed for \"%s\"", chatId, update.getMessage().getFrom().getUserName(), topicName));
             ListOfActiveQueries list = new ListOfActiveQueries();
             list.setActiveQueries(new ArrayList<>(Collections.singleton(topicName)));
             kafkaActiveQueriesSender.sendMessageToQueriesNewsTopic(list);
