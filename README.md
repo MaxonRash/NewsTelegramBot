@@ -10,7 +10,7 @@ Uses my service <a href="https://github.com/MaxonRash/NewsAPIClient">NewsApiClie
 - **Junit, Mockito** for tests
 - **Docker, Docker-compose** for deployment
 
-You can test how the bot works here: <a href="https://t.me/news_provider_telegram_bot">Telegram</a>
+You can test how the bot works here: <a href="https://t.me/news_provider_telegram_bot">Telegram</a> (Turned off now, due to server problems)
 
 **Commands:**
 - **/help** - get help with commands
